@@ -11,6 +11,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  content   String   @db.VarChar(255)
+  authorId  String
+
+  @@index([authorId]) // can look up posts by author without having to sort the whole table.
+}
+
 model Star {
   id            Int      @id @default(autoincrement())
   createdAt     DateTime @default(now())
