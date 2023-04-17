@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { api } from '~/utils/api';
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: 'from tRPC' });
-
   const user = useUser();
+
+  const { data } = api.posts.getAll.useQuery();
 
   return (
     <>
@@ -23,6 +23,12 @@ const Home: NextPage = () => {
           {user.isSignedIn && <SignOutButton />}
         </div>
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+        <div>
+          {data?.map((post) => (
+            <div key={post.id}>{post.content}</div>
+            // key is the way in which react uses to identify what should or shouldn't be updated. will keep the render time down slightly.
+          ))}
+        </div>
       </main>
     </>
   );
